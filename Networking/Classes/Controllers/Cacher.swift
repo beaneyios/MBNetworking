@@ -8,14 +8,14 @@
 import Foundation
 import CryptoSwift
 
-class Cacher : Cacheable {
+public class Cacher : Cacheable {
     
     /**
      Fetches data from the disk.
      - parameter url: The URL for which data needs to be fetched.
      - parameter completion: A closure that can either take data or an error.
      */
-    func get(url: URL, completion: (DownloadResult) -> ()) {
+    public func get(url: URL, completion: (DownloadResult) -> ()) {
         guard let cache = self.fetchCachePath() else {
             completion(.failure(error: Errors.Caching.PATH_INVALID))
             return
@@ -38,7 +38,7 @@ class Cacher : Cacheable {
      - parameter url: The URL for which data needs to be stored.
      - parameter data: The data representation of the contents of the URL.
      */
-    func set(url: URL, data: Data) {
+    public func set(url: URL, data: Data) {
         guard let cache = self.fetchCachePath() else {
             return
         }

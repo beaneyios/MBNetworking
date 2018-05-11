@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol Cacheable {
+public protocol Cacheable {
     func get(url: URL, completion: DownloadCompletion)
     func set(url: URL, data: Data)
 }

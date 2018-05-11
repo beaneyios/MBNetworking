@@ -7,14 +7,14 @@
 
 import Foundation
 
-typealias DownloadCompletion = (_ result: DownloadResult) -> ()
+public typealias DownloadCompletion = (_ result: DownloadResult) -> ()
 
-enum DownloadResult {
+public enum DownloadResult {
     case success(data: Data, response: HTTPURLResponse)
     case failure(error: Error?)
 }
 
-protocol Getter {
+public protocol Getter {
     func get(url: URL, timeout: Double, completion: @escaping DownloadCompletion) -> URLSessionDataTaskProtocol?
     func get(req: URLRequest, session: URLSessionProtocol, completion: @escaping DownloadCompletion) -> URLSessionDataTaskProtocol?
 }

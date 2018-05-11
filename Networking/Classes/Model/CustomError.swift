@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CustomError {
+public struct CustomError {
     var area: String
     var description: String
     var code: Int

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Errors {
+public struct Errors {
     struct Network {
         static var SERVER_ERROR = CustomError(area: "NETWORK", description: "There was a server error", code: 101)
         static var INVALID_URL = CustomError(area: "NETWORK", description: "There was an invalid URL", code: 102)
