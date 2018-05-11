@@ -1,0 +1,27 @@
+{
+  "name": "MBNetworking",
+  "version": "0.1.0",
+  "summary": "A short description of Networking.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/Matt Beaney/Networking",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Matt Beaney": "beaneyios@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/Matt Beaney/Networking.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "Networking/Classes/**/*",
+  "dependencies": {
+    "CryptoSwift": [
+
+    ]
+  }
+}

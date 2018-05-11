@@ -1,0 +1,34 @@
+PODS:
+  - CryptoSwift (0.9.0)
+  - MBNetworking (0.1.0):
+    - CryptoSwift
+  - MBNetworking/Tests (0.1.0):
+    - CryptoSwift
+    - Nimble
+    - Quick
+  - Nimble (7.1.1)
+  - Quick (1.3.0)
+
+DEPENDENCIES:
+  - MBNetworking (from `../`)
+  - MBNetworking/Tests (from `../`)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - CryptoSwift
+    - Nimble
+    - Quick
+
+EXTERNAL SOURCES:
+  MBNetworking:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  CryptoSwift: bca8c5b653dcc2d9734409242a070ff53bafac86
+  MBNetworking: 5b56cd5dd3625a0e872c96129c5cf79404eb9b47
+  Nimble: 391f07782af4b37914f9bd7b2ffbb952731b8202
+  Quick: 03278013f71aa05fe9ecabc94fbcc6835f1ee76f
+
+PODFILE CHECKSUM: 0d704ed8d35ff73438db10a3dfb7efa6d16ee033
+
+COCOAPODS: 1.5.0
