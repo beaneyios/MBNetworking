@@ -31,8 +31,8 @@ Pod::Spec.new do |s|
   
   s.test_spec 'Tests' do |test_spec|
       test_spec.source_files = 'NetworkingTests/**/*.{swift}'
-      test_spec.dependency 'Quick'
-      test_spec.dependency 'Nimble'
+      test_spec.dependency 'Quick', '~> 1.3.0'
+      test_spec.dependency 'Nimble', '~> 7.1.1'
   end
   
   s.dependency 'CryptoSwift', '~> 0.9.0'

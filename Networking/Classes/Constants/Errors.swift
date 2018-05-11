@@ -1,9 +1,8 @@
 //
 //  Errors.swift
-//  GoodFruit
+//  MBNetworking
 //
 //  Created by Matt Beaney on 11/01/2018.
-//  Copyright © 2018 PageSuite. All rights reserved.
 //
 
 import Foundation
@@ -19,7 +18,7 @@ struct Errors {
     struct Caching {
         static var NO_CACHE = CustomError(area: "CACHING", description: "No content available offline.", code: 301)
         
-        static var PATH_INVALID = NSError(domain: "NETWORK", code: 302, userInfo: ["description" : "Invalid caching fruit path"])
-        static var NO_STORED_DATA = NSError(domain: "com.goodfruit.caching", code: 303, userInfo: ["description" : "Invalid caching fruit path"])
+        static var PATH_INVALID = NSError(domain: "NETWORK", code: 302, userInfo: ["description" : "Invalid caching path."])
+        static var NO_STORED_DATA = NSError(domain: "com.mbnetworking.caching", code: 303, userInfo: ["description" : "No stored data."])
     }
 }

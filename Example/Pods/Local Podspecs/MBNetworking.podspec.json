@@ -2,7 +2,7 @@
   "name": "MBNetworking",
   "version": "0.1.0",
   "summary": "A short description of Networking.",
-  "description": "TODO: Add long description of the pod here.",
+  "description": "This cocoapod allows you to make quick and easy network requests without too much bloat. Currently it only supports GET. My main motivation for using this was really to get an idea how to unit test a network layer, and keep total control over my network requests",
   "homepage": "https://github.com/Matt Beaney/Networking",
   "license": {
     "type": "MIT",
@@ -15,13 +15,14 @@
     "git": "https://github.com/Matt Beaney/Networking.git",
     "tag": "0.1.0"
   },
+  "social_media_url": "https://twitter.com/beaneyios",
   "platforms": {
-    "ios": "8.0"
+    "ios": "10.0"
   },
   "source_files": "Networking/Classes/**/*",
   "dependencies": {
     "CryptoSwift": [
-
+      "~> 0.9.0"
     ]
   },
   "testspecs": [
@@ -31,10 +32,10 @@
       "source_files": "NetworkingTests/**/*.{swift}",
       "dependencies": {
         "Quick": [
-
+          "~> 1.3.0"
         ],
         "Nimble": [
-
+          "~> 7.1.1"
         ]
       }
     }

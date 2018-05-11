@@ -1,9 +1,8 @@
 //
 //  CacheGetter.swift
-//  GoodFruit
+//  MBNetworking
 //
 //  Created by Matt Beaney on 15/01/2018.
-//  Copyright © 2018 PageSuite. All rights reserved.
 //
 
 import Foundation
@@ -17,13 +16,13 @@ class Cacher : Cacheable {
      - parameter completion: A closure that can either take data or an error.
      */
     func get(url: URL, completion: (DownloadResult) -> ()) {
-        guard let cache = self.fetchFruitPath() else {
+        guard let cache = self.fetchCachePath() else {
             completion(.failure(error: Errors.Caching.PATH_INVALID))
             return
         }
         
         guard
-            let fruitData = try? Data(contentsOf: self.fullPath(cache: cache, url: url)),
+            let cachedData = try? Data(contentsOf: self.fullPath(cache: cache, url: url)),
             let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)
             else
         {
@@ -31,7 +30,7 @@ class Cacher : Cacheable {
             return
         }
         
-        completion(.success(data: fruitData, response: response))
+        completion(.success(data: cachedData, response: response))
     }
     
     /**
@@ -40,7 +39,7 @@ class Cacher : Cacheable {
      - parameter data: The data representation of the contents of the URL.
      */
     func set(url: URL, data: Data) {
-        guard let cache = self.fetchFruitPath() else {
+        guard let cache = self.fetchCachePath() else {
             return
         }
         
@@ -61,7 +60,7 @@ class Cacher : Cacheable {
      Fetches cache URL.
      - returns: The cache URL.
      */
-    fileprivate func fetchFruitPath() -> URL? {
+    fileprivate func fetchCachePath() -> URL? {
         guard
             let docs = try? FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
         else

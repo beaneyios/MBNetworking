@@ -1,9 +1,8 @@
 //
 //  Mock_Getter.swift
-//  GoodFruitTests
+//  MBNetworkingTests
 //
 //  Created by Matt Beaney on 11/01/2018.
-//  Copyright © 2018 PageSuite. All rights reserved.
 //
 
 @testable import MBNetworking
