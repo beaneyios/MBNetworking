@@ -19,10 +19,10 @@ Pod::Spec.new do |s|
 
   s.description      = 'This cocoapod allows you to make quick and easy network requests without too much bloat. Currently it only supports GET. My main motivation for using this was really to get an idea how to unit test a network layer, and keep total control over my network requests'
 
-  s.homepage         = 'https://github.com/Matt Beaney/Networking'
+  s.homepage         = 'https://github.com/beaneyios/MBNetworking'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Matt Beaney' => 'beaneyios@gmail.com' }
-  s.source           = { :git => 'https://github.com/Matt Beaney/Networking.git', :tag => s.version.to_s }
+  s.source           = { :git => 'git@github.com:beaneyios/MBNetworking.git', :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/beaneyios'
 
   s.ios.deployment_target = '10.0'
