@@ -25,7 +25,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   CryptoSwift: bca8c5b653dcc2d9734409242a070ff53bafac86
-  MBNetworking: ac7c6510cb08aaf029beb8f150c65485be59f3f1
+  MBNetworking: d75bba3da7694490236d961e36f8b7e8c6caeee7
   Nimble: 391f07782af4b37914f9bd7b2ffbb952731b8202
   Quick: 03278013f71aa05fe9ecabc94fbcc6835f1ee76f
 
