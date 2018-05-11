@@ -68,7 +68,7 @@ class Cacher_Test : QuickSpec {
                     resultDownload = result
                 })
                 
-                if let resultDownload = resultDownload, case let DownloadResult.success(data: data, response: response) = resultDownload {
+                if let resultDownload = resultDownload, case let DownloadResult.success(data: data, response: _) = resultDownload {
                     expect(String(data: data, encoding: .utf8)).to(equal("Test"))
                 } else {
                     fail()
@@ -84,7 +84,7 @@ class Cacher_Test : QuickSpec {
                 })
                 
                 if let resultDownload = resultDownload, case let DownloadResult.failure(error: error) = resultDownload {
-                    expect((error as! NSError).code).to(equal(Errors.Caching.NO_STORED_DATA.code))
+                    expect((error! as NSError).code).to(equal(Errors.Caching.NO_STORED_DATA.code))
                 } else {
                     fail()
                 }
