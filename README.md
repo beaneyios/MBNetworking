@@ -1,6 +1,6 @@
 # Networking
 
-[![CI Status](https://img.shields.io/travis/Matt Beaney/Networking.svg?style=flat)](https://travis-ci.org/Matt Beaney/Networking)
+[![CI Status](https://img.shields.io/travis/Matt%20Beaney/Networking.svg?style=flat)](https://travis-ci.org/Matt%20Beaney/Networking)
 [![Version](https://img.shields.io/cocoapods/v/Networking.svg?style=flat)](https://cocoapods.org/pods/Networking)
 [![License](https://img.shields.io/cocoapods/l/Networking.svg?style=flat)](https://cocoapods.org/pods/Networking)
 [![Platform](https://img.shields.io/cocoapods/p/Networking.svg?style=flat)](https://cocoapods.org/pods/Networking)
