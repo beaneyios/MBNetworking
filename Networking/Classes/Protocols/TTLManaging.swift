@@ -8,6 +8,7 @@
 import Foundation
 
 public protocol TTLManaging {
-    func setTTL(url: URL, secondsTTL: Int)
-    func cacheInDate(url: URL) -> Bool
+    func setTTL(url: URL, secondsTTL: Int, type: String)
+    func cacheInDate(url: URL, type: String) -> Bool
+    func clearTTLs(type: String)
 }

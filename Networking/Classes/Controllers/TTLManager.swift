@@ -10,11 +10,11 @@ import Foundation
 public class TTLManager: TTLManaging {
     public init() {}
     
-    public func cacheInDate(url: URL) -> Bool {
+    public func cacheInDate(url: URL, type: String) -> Bool {
         let hash = url.absoluteString.sha1()
         let fileName = self.fetchFileName(hash: hash)
         guard
-            let currentTTLs = self.readTTLs(fileName: fileName),
+            let currentTTLs = self.readTTLs(fileName: fileName, folder: type),
             let ttl = currentTTLs[hash]
         else {
             return false
@@ -24,17 +24,25 @@ public class TTLManager: TTLManaging {
         return currentDate < ttl
     }
     
-    public func setTTL(url: URL, secondsTTL: Int) {
+    public func setTTL(url: URL, secondsTTL: Int, type: String) {
         let hash = url.absoluteString.sha1()
         let fileName = self.fetchFileName(hash: hash)
         let convertedTimeStamp = self.convertTTLToTimeStamp(secondsTTL: secondsTTL)
-        guard var currentTTLs = self.readTTLs(fileName: fileName) else {
-            self.writeTTLs(ttls: [hash: convertedTimeStamp], fileName: fileName)
+        guard var currentTTLs = self.readTTLs(fileName: fileName, folder: type) else {
+            self.writeTTLs(ttls: [hash: convertedTimeStamp], fileName: fileName, folder: type)
             return
         }
         
         currentTTLs[url.absoluteString.sha1()] = convertedTimeStamp
-        self.writeTTLs(ttls: currentTTLs, fileName: fileName)
+        self.writeTTLs(ttls: currentTTLs, fileName: fileName, folder: type)
+    }
+    
+    public func clearTTLs(type: String) {
+        guard let cachePath = self.fetchTTLPath(folder: type) else {
+            return
+        }
+        
+        try? FileManager.default.removeItem(at: cachePath)
     }
     
     fileprivate func convertTTLToTimeStamp(secondsTTL: Int) -> Int {
@@ -52,9 +60,9 @@ public class TTLManager: TTLManaging {
         return hash
     }
     
-    fileprivate func readTTLs(fileName: String) -> [String : Int]? {
+    fileprivate func readTTLs(fileName: String, folder: String) -> [String : Int]? {
         guard
-            let cache = self.fetchTTLPath(),
+            let cache = self.fetchTTLPath(folder: folder),
             let data = try? Data(contentsOf: self.fullPath(cache: cache, fileName: fileName)),
             let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments)
             else
@@ -65,9 +73,9 @@ public class TTLManager: TTLManaging {
         return json as? [String : Int]
     }
     
-    fileprivate func writeTTLs(ttls: [String : Int], fileName: String) {
+    fileprivate func writeTTLs(ttls: [String : Int], fileName: String, folder: String) {
         guard
-            let cache = self.fetchTTLPath(),
+            let cache = self.fetchTTLPath(folder: folder),
             let data = try? JSONSerialization.data(withJSONObject: ttls, options: .prettyPrinted)
             else
         {
@@ -91,7 +99,7 @@ public class TTLManager: TTLManaging {
      Fetches cache URL.
      - returns: The cache URL.
      */
-    fileprivate func fetchTTLPath() -> URL? {
+    fileprivate func fetchTTLPath(folder: String) -> URL? {
         guard
             let docs = try? FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             else
@@ -99,7 +107,7 @@ public class TTLManager: TTLManaging {
             return nil
         }
         
-        let createdFolder = FolderCreator.createFolderIfNoneExists(url: docs.appendingPathComponent("ttls"))
+        let createdFolder = FolderCreator.createFolderIfNoneExists(url: docs.appendingPathComponent(folder).appendingPathComponent("ttls"))
         return createdFolder != nil ? createdFolder : docs
     }
 }

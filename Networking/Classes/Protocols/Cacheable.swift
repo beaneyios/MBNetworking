@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol Cacheable {
-    func get(url: URL) -> DownloadResult
-    func set(url: URL, data: Data, secondsTTL: Int)
-    func cacheInDate(url: URL) -> Bool
+    func get(url: URL, type: String) -> DownloadResult
+    func set(url: URL, data: Data, secondsTTL: Int, type: String)
+    func cacheInDate(url: URL, type: String) -> Bool
 }

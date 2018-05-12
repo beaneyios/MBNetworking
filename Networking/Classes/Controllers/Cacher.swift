@@ -14,18 +14,18 @@ public class Cacher : Cacheable {
         self.ttlManager = ttlManager
     }
     
-    public func cacheInDate(url: URL) -> Bool {
-        if case DownloadResult.failure(error: _) = self.get(url: url) { return false }
-        return ttlManager.cacheInDate(url: url)
+    public func cacheInDate(url: URL, type: String) -> Bool {
+        if case DownloadResult.failure(error: _) = self.get(url: url, type: type) { return false }
+        return ttlManager.cacheInDate(url: url, type: type)
     }
     
     /**
      Fetches data from the disk.
      - parameter url: The URL for which data needs to be fetched.
-     - parameter completion: A closure that can either take data or an error.
+     - parameter type: A string representing the sub-cache folder that you want.
      */
-    public func get(url: URL) -> DownloadResult {
-        guard let cache = self.fetchCachePath() else {
+    public func get(url: URL, type: String) -> DownloadResult {
+        guard let cache = self.fetchCachePath(folder: type) else {
             return .failure(error: Errors.Caching.PATH_INVALID)
         }
         
@@ -45,13 +45,19 @@ public class Cacher : Cacheable {
      - parameter url: The URL for which data needs to be stored.
      - parameter data: The data representation of the contents of the URL.
      */
-    public func set(url: URL, data: Data, secondsTTL: Int) {
-        guard let cache = self.fetchCachePath() else {
+    public func set(url: URL, data: Data, secondsTTL: Int, type: String) {
+        guard let cache = self.fetchCachePath(folder: type) else {
             return
         }
         
-        self.ttlManager.setTTL(url: url, secondsTTL: secondsTTL)
+        self.ttlManager.setTTL(url: url, secondsTTL: secondsTTL, type: type)
         try? data.write(to: self.fullPath(cache: cache, fileName: url.absoluteString.sha1()), options: .atomic)
+    }
+    
+    public func clearCache(type: String) {
+        guard let cachePath = self.fetchCachePath(folder: type) else { return }
+        try? FileManager.default.removeItem(at: cachePath)
+        self.ttlManager.clearTTLs(type: type)
     }
     
     /**
@@ -68,7 +74,7 @@ public class Cacher : Cacheable {
      Fetches cache URL.
      - returns: The cache URL.
      */
-    fileprivate func fetchCachePath() -> URL? {
+    fileprivate func fetchCachePath(folder: String) -> URL? {
         guard
             let docs = try? FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
         else
@@ -76,7 +82,7 @@ public class Cacher : Cacheable {
             return nil
         }
         
-        let createdFolder = FolderCreator.createFolderIfNoneExists(url: docs.appendingPathComponent("files"))
+        let createdFolder = FolderCreator.createFolderIfNoneExists(url: docs.appendingPathComponent(folder).appendingPathComponent("files"))
         return createdFolder != nil ? createdFolder : docs
     }
 }
