@@ -12,7 +12,7 @@ public struct CustomError {
     var description: String
     var code: Int
     
-    init(area: String, description: String, code: Int) {
+    public init(area: String, description: String, code: Int) {
         self.area           = area
         self.description    = description
         self.code           = code

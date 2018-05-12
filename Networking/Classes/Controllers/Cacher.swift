@@ -9,28 +9,35 @@ import Foundation
 import CryptoSwift
 
 public class Cacher : Cacheable {
+    private var ttlManager: TTLManaging
+    public init(ttlManager: TTLManaging) {
+        self.ttlManager = ttlManager
+    }
+    
+    public func cacheInDate(url: URL) -> Bool {
+        if case DownloadResult.failure(error: _) = self.get(url: url) { return false }
+        return ttlManager.cacheInDate(url: url)
+    }
     
     /**
      Fetches data from the disk.
      - parameter url: The URL for which data needs to be fetched.
      - parameter completion: A closure that can either take data or an error.
      */
-    public func get(url: URL, completion: (DownloadResult) -> ()) {
+    public func get(url: URL) -> DownloadResult {
         guard let cache = self.fetchCachePath() else {
-            completion(.failure(error: Errors.Caching.PATH_INVALID))
-            return
+            return .failure(error: Errors.Caching.PATH_INVALID)
         }
         
         guard
-            let cachedData = try? Data(contentsOf: self.fullPath(cache: cache, url: url)),
+            let cachedData = try? Data(contentsOf: self.fullPath(cache: cache, fileName: url.absoluteString.sha1())),
             let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)
             else
         {
-            completion(.failure(error: Errors.Caching.NO_STORED_DATA))
-            return
+            return .failure(error: Errors.Caching.NO_STORED_DATA)
         }
         
-        completion(.success(data: cachedData, response: response))
+        return .success(data: cachedData, response: response)
     }
     
     /**
@@ -38,12 +45,13 @@ public class Cacher : Cacheable {
      - parameter url: The URL for which data needs to be stored.
      - parameter data: The data representation of the contents of the URL.
      */
-    public func set(url: URL, data: Data) {
+    public func set(url: URL, data: Data, secondsTTL: Int) {
         guard let cache = self.fetchCachePath() else {
             return
         }
         
-        try? data.write(to: self.fullPath(cache: cache, url: url), options: .atomic)
+        self.ttlManager.setTTL(url: url, secondsTTL: secondsTTL)
+        try? data.write(to: self.fullPath(cache: cache, fileName: url.absoluteString.sha1()), options: .atomic)
     }
     
     /**
@@ -52,8 +60,8 @@ public class Cacher : Cacheable {
      - parameter url: The URL.
      - returns: The full URL path
      */
-    fileprivate func fullPath(cache: URL, url: URL) -> URL {
-        return cache.appendingPathComponent("\(url.absoluteString.sha1()).dat")
+    fileprivate func fullPath(cache: URL, fileName: String) -> URL {
+        return cache.appendingPathComponent("\(fileName).dat")
     }
     
     /**
@@ -68,6 +76,7 @@ public class Cacher : Cacheable {
             return nil
         }
         
-        return docs
+        let createdFolder = FolderCreator.createFolderIfNoneExists(url: docs.appendingPathComponent("files"))
+        return createdFolder != nil ? createdFolder : docs
     }
 }
