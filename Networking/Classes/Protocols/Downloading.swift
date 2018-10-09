@@ -16,5 +16,6 @@ public enum DownloadResult {
 
 public protocol Getter {
     func get(url: URL, timeout: Double, completion: @escaping DownloadCompletion) -> URLSessionDataTaskProtocol?
+    func get(req: URLRequest, timeout: Double, completion: @escaping DownloadCompletion) -> URLSessionDataTaskProtocol?
     func get(req: URLRequest, session: URLSessionProtocol, completion: @escaping DownloadCompletion) -> URLSessionDataTaskProtocol?
 }

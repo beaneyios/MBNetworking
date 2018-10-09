@@ -24,6 +24,22 @@ public class NetworkGetter : Getter {
     /**
      Makes a request and returns a data task to be cancelled if need be.
      - parameter req: the request that needs to be made.
+     - parameter completion: The completion for the request, this takes Data or Error
+     - returns a URLSession for any potential cancelling of tasks.
+     */
+    public func get(req: URLRequest, timeout: Double, completion: @escaping DownloadCompletion) -> URLSessionDataTaskProtocol? {
+        guard let url = req.url else {
+            return nil
+        }
+        
+        let session = self.fetchRequest(for: url, timeout: timeout).0
+        
+        return get(req: req, session: session, completion: completion)
+    }
+    
+    /**
+     Makes a request and returns a data task to be cancelled if need be.
+     - parameter req: the request that needs to be made.
      - parameter session: A session protocol.
      - parameter completion: The completion for the request, this takes Data or Error
      - returns a URLSession for any potential cancelling of tasks.
