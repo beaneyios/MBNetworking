@@ -1,6 +1,6 @@
 {
   "name": "MBNetworking",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "summary": "A small library allowing networking - mostly for personal development and use across multiple projects.",
   "swift_version": "4.1",
   "description": "This cocoapod allows you to make quick and easy network requests without too much bloat. Currently it only supports GET. My main motivation for using this was really to get an idea how to unit test a network layer, and keep total control over my network requests",
@@ -14,7 +14,7 @@
   },
   "source": {
     "git": "https://github.com/beaneyios/MBNetworking.git",
-    "tag": "0.1.0"
+    "tag": "0.1.4"
   },
   "social_media_url": "https://twitter.com/beaneyios",
   "platforms": {

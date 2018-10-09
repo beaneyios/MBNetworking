@@ -12,12 +12,16 @@ class MockCacher : Cacheable {
     var getCalled: Bool = false
     var setCalled: Bool = false
     
-    func get(url: URL, completion: (DownloadResult) -> ()) {
+    func get(url: URL, type: String) -> DownloadResult {
         self.getCalled = true
-        completion(DownloadResult.failure(error: nil))
+        return DownloadResult.failure(error: nil)
     }
     
-    func set(url: URL, data: Data) {
+    func set(url: URL, data: Data, secondsTTL: Int, type: String) {
         self.setCalled = true
+    }
+    
+    func cacheInDate(url: URL, type: String) -> Bool {
+        return false
     }
 }

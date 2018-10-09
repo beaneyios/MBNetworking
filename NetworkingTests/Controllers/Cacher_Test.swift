@@ -34,7 +34,8 @@ class Cacher_Test : QuickSpec {
                 let url = URL(string: "http://google.com")!
                 let data = "Test".data(using: .utf8)
                 
-                Cacher().set(url: url, data: data!)
+                let ttlManager = TTLManager()
+                Cacher(ttlManager: ttlManager).set(url: url, data: data!, secondsTTL: 10, type: "Test")
                 
                 guard
                     let cache = try? FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
@@ -44,7 +45,9 @@ class Cacher_Test : QuickSpec {
                     return
                 }
                 
-                let fullPath = cache.appendingPathComponent("\(url.absoluteString.sha1()).dat")
+                let folderPath = cache  .appendingPathComponent("Test/")
+                                        .appendingPathComponent("files")
+                let fullPath = folderPath.appendingPathComponent("\(url.absoluteString.sha1()).dat")
                 expect(try? Data(contentsOf: fullPath)).toNot(beNil())
             }
             
@@ -60,15 +63,22 @@ class Cacher_Test : QuickSpec {
                     return
                 }
                 
-                let fullPath = cache.appendingPathComponent("\(url.absoluteString.sha1()).dat")
-                try? data?.write(to: fullPath)
+                let folderPath = cache.appendingPathComponent("Test/")
+                                    .appendingPathComponent("files")
                 
-                var resultDownload: DownloadResult?
-                Cacher().get(url: url, completion: { (result) in
-                    resultDownload = result
-                })
+                _ = FolderCreator.createFolderIfNoneExists(url: folderPath)
+                let fullPath = folderPath.appendingPathComponent("\(url.absoluteString.sha1()).dat")
                 
-                if let resultDownload = resultDownload, case let DownloadResult.success(data: data, response: _) = resultDownload {
+                do {
+                    try? data?.write(to: fullPath)
+                } catch {
+                    print(error)
+                }
+                
+                let ttlManager = TTLManager()
+                let resultDownload = Cacher(ttlManager: ttlManager).get(url: url, type: "Test")
+                
+                if case let DownloadResult.success(data: data, response: _) = resultDownload {
                     expect(String(data: data, encoding: .utf8)).to(equal("Test"))
                 } else {
                     fail()
@@ -78,12 +88,10 @@ class Cacher_Test : QuickSpec {
             it("Should complete with nil error when nothing is found on disk.") {
                 let url = URL(string: "http://google.com")!
                 
-                var resultDownload: DownloadResult?
-                Cacher().get(url: url, completion: { (result) in
-                    resultDownload = result
-                })
+                let ttlManager = TTLManager()
+                let resultDownload = Cacher(ttlManager: ttlManager).get(url: url, type: "Test")
                 
-                if let resultDownload = resultDownload, case let DownloadResult.failure(error: error) = resultDownload {
+                if case let DownloadResult.failure(error: error) = resultDownload {
                     expect((error! as NSError).code).to(equal(Errors.Caching.NO_STORED_DATA.code))
                 } else {
                     fail()
