@@ -9,6 +9,7 @@
 import Foundation
 
 class MockGetter : Getter {
+    
     var shouldFail: Bool = false
     var data: Data?
     var response: HTTPURLResponse?
@@ -25,6 +26,10 @@ class MockGetter : Getter {
     }
     
     func get(req: URLRequest, session: URLSessionProtocol, completion: @escaping DownloadCompletion) -> URLSessionDataTaskProtocol? {
+        return nil
+    }
+    
+    func get(req: URLRequest, timeout: Double, completion: @escaping DownloadCompletion) -> URLSessionDataTaskProtocol? {
         return nil
     }
 }
