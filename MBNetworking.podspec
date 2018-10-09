@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'MBNetworking'
-  s.version          = '0.1.6'
+  s.version          = '0.1.7'
   s.summary          = 'A small library allowing networking - mostly for personal development and use across multiple projects.'
   s.swift_version    = '4.1'
 
